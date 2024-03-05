@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Music340.Data;
 using Music340.Models;
 
@@ -26,8 +27,16 @@ namespace Music340.Controllers
         }
         [Authorize]
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(string genre)
         {
+            IEnumerable<string> genres = _context.Genres.Select(a  => a.Name).Distinct();
+            IEnumerable<SelectListItem> selectGenre = genres.Select(a => new SelectListItem
+            {
+                Text = a.ToString(),
+                Value = a.ToString(),
+                Selected = a == genre
+            });
+            ViewBag.Genre = selectGenre;
             return View();
         }
         [HttpPost]
@@ -35,7 +44,7 @@ namespace Music340.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(alb);
+                _context.Albums.Add(alb);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
