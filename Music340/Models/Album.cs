@@ -5,6 +5,7 @@ namespace Music340.Models
     public class Album
     {
         public int Id { get; set; }
+        public int GenreId { get; set; }
         [Required(ErrorMessage = "Album Title cannot be blank")]
         [Display(Name = "Album Title")]
         public string Title { get; set; }
@@ -13,6 +14,8 @@ namespace Music340.Models
         [Required(ErrorMessage = "Year cannot be blank")]
         [Range(1900,2024)]
         public int Year { get; set; }
-        public string Genre { get; set; }
+        [StringLength(100)]
+        public string ItemImage { get; set; }
+        public Genre Genre { get; set; }
     }
 }

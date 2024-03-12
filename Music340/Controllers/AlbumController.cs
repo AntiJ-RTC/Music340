@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Music340.Data;
 using Music340.Models;
+using Music340.ViewModels;
 
 namespace Music340.Controllers
 {
@@ -27,28 +28,37 @@ namespace Music340.Controllers
         }
         [Authorize]
         [HttpGet]
-        public IActionResult Create(string genre)
+        public IActionResult Create(int genreId)
         {
-            IEnumerable<string> genres = _context.Genres.Select(a  => a.Name).Distinct();
-            IEnumerable<SelectListItem> selectGenre = genres.Select(a => new SelectListItem
+            if (genreId == 0)
             {
-                Text = a.ToString(),
-                Value = a.ToString(),
-                Selected = a == genre
-            });
-            ViewBag.Genre = selectGenre;
+                return NotFound();
+            }
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Create(Album alb)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Albums.Add(alb);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+
             return View(alb);
+        }
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            Album album = _context.Albums.SingleOrDefault(a => a.Id == id);
+            if(album == null)
+            {
+                return NotFound();
+            }
+            AlbumCreateVM albVM = new AlbumCreateVM
+            {
+
+            };
+            return View(albVM);
         }
     }
 }
