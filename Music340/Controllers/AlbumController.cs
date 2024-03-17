@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Music340.Data;
 using Music340.Models;
@@ -16,7 +17,7 @@ namespace Music340.Controllers
             _context = context;
             _environment = environment;
         }
-        public IActionResult Index()
+        public IActionResult Index(string genre)
         {
             IEnumerable<Album> albums = _context.Albums.Include(x => x.Genre).Where(x => x.IsActive);
             return View(albums);
