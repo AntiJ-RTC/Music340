@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Music340.Data;
 using Music340.Models;
 using Music340.ViewModels;
@@ -18,13 +18,21 @@ namespace Music340.Controllers
         }
         public IActionResult Index()
         {
-            var data = _context.Albums.ToList();
-            return View(data);
+            IEnumerable<Album> albums = _context.Albums.Include(x => x.Genre).Where(x => x.IsActive);
+            return View(albums);
         }
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
-            var getDetails = await _context.Albums.FindAsync(id);
-            return View(getDetails);
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            Album alb = _context.Albums.SingleOrDefault(x => x.Id == id);
+            if (alb == null)
+            {
+                return NotFound();
+            }
+            return View(alb);
         }
         [Authorize]
         [HttpGet]
@@ -34,13 +42,44 @@ namespace Music340.Controllers
             {
                 return NotFound();
             }
-            return View();
+            Genre genre = _context.Genres.SingleOrDefault(x => x.Id == genreId);
+            if (genre == null)
+            {
+                return NotFound();
+            }
+            AlbumCreateVM albVM = new AlbumCreateVM
+            {
+                GenreId = genre.Id,
+                Genre = genre
+            };
+            return View(albVM);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Album alb)
+        public IActionResult Create(AlbumCreateVM albVM)
         {
-
-            return View(alb);
+            if (!ModelState.IsValid)
+            {
+                Genre genre = _context.Genres.SingleOrDefault(x => x.Id == albVM.GenreId);
+                if(genre == null)
+                {
+                    return NotFound();
+                }
+                return View(albVM);
+            }
+            string img = SaveUploadedFile(albVM.ItemImageFile);
+            Album alb = new Album
+            {
+                GenreId = albVM.GenreId,
+                Title = albVM.Title,
+                Artist = albVM.Artist,
+                Year = albVM.Year,
+                ItemImage = img,
+                IsActive = true
+            };
+            _context.Albums.Add(alb);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+            
         }
         [HttpGet]
         public IActionResult Edit(int id)
@@ -59,6 +98,21 @@ namespace Music340.Controllers
 
             };
             return View(albVM);
+        }
+        private string SaveUploadedFile(IFormFile file)
+        {
+            if (file != null)
+            {
+                string folder = Path.Combine(_environment.WebRootPath, "images");
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string fullFilePath = Path.Combine(folder, fileName);
+                using (FileStream fs = new FileStream(fullFilePath, FileMode.Create))
+                {
+                    file.CopyTo(fs);
+                }
+                return fileName;
+            }
+            return "";
         }
     }
 }

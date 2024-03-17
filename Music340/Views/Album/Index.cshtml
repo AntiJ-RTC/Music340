@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Album>
+
+@{
+    ViewData["Title"] = "Album List";
+}
+
+<h1>Albums</h1>
+
+<h4>In order to create an album, <a asp-controller="Genre" asp-action="Index">go to the Genre page.</a></h4>
+<hr />
+<div class="row">
+    @foreach (Album alb in Model)
+    {
+        <div class="card" style="width: 25rem; margin: 1rem;">
+            <center>
+                <img src="/images/@alb.ItemImage" class="card-img-top" style="margin-top: 10px;" alt="album image">
+            </center>
+            <div class="card-body">
+                <h5 class="card-title text-primary">@alb.Title</h5>
+                <h5 class="card-title">@alb.Artist</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">@alb.Genre.Name</h6>
+                <a asp-action="Details" asp-route-id="@alb.Id" class="btn btn-info" style="width: 100px; margin-right: 2px;">Details</a>
+                <a asp-action="Edit" asp-route-id="@alb.Id" class="btn btn-success" style="width: 100px; margin-right: 2px;">Edit</a>
+                <a asp-action="Delete" asp-route-id="@alb.Id" class="btn btn-danger" style="width: 100px; margin-right: 2px;">Delete</a>
+            </div>
+        </div>
+    }
+</div>

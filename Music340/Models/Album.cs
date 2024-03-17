@@ -14,8 +14,11 @@ namespace Music340.Models
         [Required(ErrorMessage = "Year cannot be blank")]
         [Range(1900,2024)]
         public int Year { get; set; }
+        [Required(ErrorMessage = "Please Add Album Image")]
         [StringLength(100)]
         public string ItemImage { get; set; }
+        [Required]
+        public bool IsActive { get; set; }
         public Genre Genre { get; set; }
     }
 }

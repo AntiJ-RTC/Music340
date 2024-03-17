@@ -7,7 +7,7 @@
 <h1>Music Genres</h1>
 
 <p>
-    <a asp-action="Create">Add Genre</a>
+    <a asp-action="Create" class="btn btn-secondary">Add Genre</a>
 </p>
 <table class="table">
     <thead>
@@ -31,10 +31,10 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                <a asp-controller="Album" asp-action="Create" asp-route-genreId="@item.Id">Add Album</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info" style="width: 5rem; margin: 5px;">Details</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success" style="width: 5rem; margin: 5px;">Edit</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" style="width: 5rem; margin: 5px;">Delete</a>
+                <a asp-controller="Album" asp-action="Create" asp-route-genreId="@item.Id" class="btn btn-primary" style="width: 17rem; margin: 5px;">Add Album</a>
             </td>
         </tr>
 }

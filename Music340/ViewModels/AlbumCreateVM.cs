@@ -1,4 +1,4 @@
-﻿using Final.Validation;
+﻿using Music340.Validation;
 using Music340.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,6 +19,7 @@ namespace Music340.ViewModels
         [Display(Name = "Upload Item Photo")]
         [ItemImgValidation]
         public IFormFile ItemImageFile { get; set; }
+        public bool IsActive { get; set; }
         public Genre Genre { get; set; }
     }
 }

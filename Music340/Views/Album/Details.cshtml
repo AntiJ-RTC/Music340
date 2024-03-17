@@ -1,0 +1,16 @@
+﻿@model Album
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Album Details</h1>
+
+<img src="/images/@Model.ItemImage" style="margin-right: 10px; float: left; width: 300px;" alt="album image">
+<h5 class=" text-primary">@Model.Title</h5>
+<h5>@Model.Artist</h5>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
