@@ -1,4 +1,4 @@
-# Music Web Application README
+# Music340 README
 
 Welcome to our Music Web Application! This application allows users to manage albums and genres using CRUD (Create, Read, Update, Delete) functionality. Whether you're a music enthusiast, a collector, or just someone who loves organizing music, this application is designed to make your experience seamless and enjoyable.
 
