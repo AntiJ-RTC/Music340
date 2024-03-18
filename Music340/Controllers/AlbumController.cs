@@ -17,7 +17,7 @@ namespace Music340.Controllers
             _context = context;
             _environment = environment;
         }
-        public IActionResult Index(string genre)
+        public IActionResult Index()
         {
             IEnumerable<Album> albums = _context.Albums.Include(x => x.Genre).Where(x => x.IsActive);
             return View(albums);
@@ -96,9 +96,56 @@ namespace Music340.Controllers
             }
             AlbumCreateVM albVM = new AlbumCreateVM
             {
-
+                GenreId = album.GenreId,
+                Title = album.Title,
+                Artist = album.Artist,
+                Year = album.Year,
+                ItemImage = album.ItemImage,
+                IsActive = album.IsActive
             };
             return View(albVM);
+        }
+        [HttpPost]
+        public IActionResult Edit(Album alb) 
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(alb);
+            }
+            _context.Albums.Update(alb);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            Album alb = _context.Albums.SingleOrDefault(x => x.Id == id);
+            if(alb == null)
+            {
+                return NotFound();
+            }
+            return View(alb);
+        }
+        [HttpPost]
+        public IActionResult Delete(Album album)
+        {
+            if(album.Id == 0)
+            {
+                return NotFound();
+            }
+            Album alb = _context.Albums.SingleOrDefault(x => x.Id == album.Id);
+            if (alb == null)
+            {
+                return NotFound();
+            }
+            alb.IsActive = false;
+            _context.Albums.Update(alb);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
         private string SaveUploadedFile(IFormFile file)
         {

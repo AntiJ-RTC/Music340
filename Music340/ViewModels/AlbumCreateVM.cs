@@ -16,6 +16,8 @@ namespace Music340.ViewModels
         [Required(ErrorMessage = "Year cannot be blank")]
         [Range(1900, 2024)]
         public int Year { get; set; }
+        [StringLength(100)]
+        public string ItemImage { get; set; }
         [Display(Name = "Upload Item Photo")]
         [ItemImgValidation]
         public IFormFile ItemImageFile { get; set; }

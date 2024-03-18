@@ -1,0 +1,41 @@
+﻿@model AlbumCreateVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Album</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="GenreId" hidden />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Artist" class="control-label"></label>
+                <input asp-for="Artist" class="form-control" />
+                <span asp-validation-for="Artist" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Year" class="control-label"></label>
+                <input asp-for="Year" class="form-control" value="" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <input asp-for="ItemImage" hidden />
+            <input asp-for="IsActive" hidden />
+            <div class="form-group" style="margin-top: 5px;">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+                <a asp-controller="Album" asp-action="Index" class="btn btn-secondary">Back to list</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
