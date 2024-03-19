@@ -82,6 +82,7 @@ namespace Music340.Controllers
             return RedirectToAction("Index");
             
         }
+        [Authorize]
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -116,6 +117,7 @@ namespace Music340.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+        [Authorize]
         [HttpGet]
         public IActionResult Delete(int id)
         {
